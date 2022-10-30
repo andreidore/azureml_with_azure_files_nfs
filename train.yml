@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+environment: azureml:python-base-nfs:1
+compute: azureml:cpu-cluster
+code: code/
+command: |
+  mkdir /data
+  mount -t nfs 10.0.2.4:/amlnfs/amlnfsshare /data -o vers=4,minorversion=1,sec=sys
+  df -h
+  python train.py
+  # Run fio on NFS share
+  cd /data
+  fio --name=4krandomreads --rw=randread --direct=1 --ioengine=libaio --bs=4k --numjobs=4 --iodepth=128 --size=1G --runtime=60 --group_reporting
+  # Run fio on local disk
+  mkdir /test
+  cd /test
+  fio --name=4krandomreads --rw=randread --direct=1 --ioengine=libaio --bs=4k --numjobs=4 --iodepth=128 --size=1G --runtime=60 --group_reporting
