@@ -7,10 +7,25 @@ command: |
   mount -t nfs 10.0.2.4:/amlnfs/amlnfsshare /data -o vers=4,minorversion=1,sec=sys
   df -h
   python train.py
-  # Run fio on NFS share
-  cd /data
-  fio --name=4krandomreads --rw=randread --direct=1 --ioengine=libaio --bs=4k --numjobs=4 --iodepth=128 --size=1G --runtime=60 --group_reporting
-  # Run fio on local disk
+
+  echo "Write NFS test"
+  time dd if=/dev/zero of=/data/testfile bs=16k count=400k
+  
+  echo "Read NFS test"
+  time dd if=/data/testfile of=/dev/null bs=16k
+  
+  
   mkdir /test
-  cd /test
-  fio --name=4krandomreads --rw=randread --direct=1 --ioengine=libaio --bs=4k --numjobs=4 --iodepth=128 --size=1G --runtime=60 --group_reporting
+  
+  echo "Write local test"
+  time dd if=/dev/zero of=/test/testfile bs=16k count=400k
+  
+  echo "Read local test"
+  time dd if=/test/testfile of=/dev/null bs=16k
+  
+  
+  
+  
+  
+  
+  

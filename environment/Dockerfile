@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
 USER root:root
 
 # Install NFS stack
-RUN apt-get install -y nfs-common fio
+RUN apt-get install -y nfs-common
 
 # Install Python dependencies
 COPY requirements.txt .

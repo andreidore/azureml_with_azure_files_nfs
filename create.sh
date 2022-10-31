@@ -30,7 +30,7 @@ az network vnet subnet create --vnet-name $vnet_name -n amlnfs --address-prefixe
 
 az storage account create -n amlnfs --sku Premium_LRS --kind FileStorage --access-tier Premium --vnet $vnet_name --subnet amlnfs --public-network-access Enabled  --default-action Deny --https-only false
 
-az storage share-rm create --storage-account amlnfs --name amlnfsshare --quota 100 --enabled-protocol NFS
+az storage share-rm create --storage-account amlnfs --name amlnfsshare --quota 1024 --enabled-protocol NFS
 
 # create Azure ML workspace
 az ml workspace create --name $workspace_name
