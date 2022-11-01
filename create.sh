@@ -26,11 +26,18 @@ az network vnet subnet create --vnet-name $vnet_name -n aml --address-prefixes $
 az network vnet subnet create --vnet-name $vnet_name -n amlnfs --address-prefixes $vnet_nfs_subnet --service-endpoints Microsoft.Storage
 
 
-#az storage account create -n amlnfs --sku Premium_LRS --kind FileStorage --access-tier Premium --vnet_name $vnet_name --subnet $vnet_nfs_subnet --public-network-access Disabled
-
+# create storage Azure files 
 az storage account create -n amlnfs --sku Premium_LRS --kind FileStorage --access-tier Premium --vnet $vnet_name --subnet amlnfs --public-network-access Enabled  --default-action Deny --https-only false
 
+# create NFS Shares
 az storage share-rm create --storage-account amlnfs --name amlnfsshare --quota 1024 --enabled-protocol NFS
+
+# create private endpoint to Azure Files 
+storage_id=$(az storage account show -n amlnfs  --query "id" --output tsv)
+
+az network private-endpoint create --connection-name amlnfs-connection --name amlnfs-private-endpoint --private-connection-resource-id $storage_id --subnet amlnfs --vnet $vnet_name --group-id file   --ip-config name=myIPconfig group-id=file member-name=file private-ip-address=10.0.2.4
+
+
 
 # create Azure ML workspace
 az ml workspace create --name $workspace_name
@@ -44,9 +51,6 @@ az ml compute create -n cpu-cluster --type amlcompute --min-instances 0 --max-in
 
 ###
 
-storage_id=$(az storage account show -n amlnfs  --query "id" --output tsv)
-
-az network private-endpoint create --connection-name amlnfs-connection --name amlnfs-private-endpoint --private-connection-resource-id $storage_id --subnet amlnfs --vnet $vnet_name --group-id file   --ip-config name=myIPconfig group-id=file member-name=file private-ip-address=10.0.2.4
 
 
 
