@@ -10,7 +10,7 @@ Install the Azure CLI : https://learn.microsoft.com/en-us/cli/azure/install-azur
 
 ## Configuration
 
-Modify create.sh with you configuration
+Modify create.sh with your configuration:
 
 ```console
 
