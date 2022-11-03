@@ -26,6 +26,18 @@ vnet_nfs_subnet='10.0.2.0/24'
 
 ```
 
+## Resources
+
+Create resources
+
+```sh
+./create.sh
+```
+
+
+## Submit job
+
+
 
 
 
