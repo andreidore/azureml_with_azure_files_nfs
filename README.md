@@ -1,6 +1,6 @@
 # azureml_with_azure_files_nfs
 
-A repo that shows how to use Azure Machine Learning with Azure Files.
+A repo that shows how to use Azure Machine Learning with Azure Files NFS share.
 
 
 
@@ -28,7 +28,7 @@ vnet_nfs_subnet='10.0.2.0/24'
 
 ## Resources
 
-Create resources
+Create all of the resources ( Azure ML , Storage, NFS, VNET , etc)
 
 ```sh
 ./create.sh
@@ -37,6 +37,7 @@ Create resources
 
 ## Submit job
 
+Submit the Azure ML job. This will start a dummy script and then will measure the speed between Azure ML Compute instance and NFS stoarge
 
 ```sh
 az ml job create -f train.yml --web
