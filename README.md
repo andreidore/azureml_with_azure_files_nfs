@@ -38,6 +38,21 @@ Create resources
 ## Submit job
 
 
+```sh
+az ml job create -f train.yml --web
+```
+
+
+## Clean
+
+Delete all resources
+
+```sh
+./delete.sh
+```
+
+
+
 
 
 
